@@ -109,7 +109,7 @@ class Hero
   end
 
 
-	def attack(window)	
+	def attack(window)	    
     if @image_number > 12
       @image_number = 0
     end	    
