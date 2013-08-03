@@ -30,7 +30,8 @@ class FighterWindow < Gosu::Window
     end
 
     if button_down? Gosu::KbSpace  then    	
-      @hero.attack(self)
+      # @hero.attack(self)
+      @hero.accelerate(self,"attack_acceleration")
     end
 
     @hero.move
@@ -62,6 +63,7 @@ end
 class Hero
 	def initialize(window)
 		@hero_image = Gosu::Image.new(window,"/home/webonise/Projects/GeekHours/fighter/asset/hero/red_knight_battlefield_bitmaps/paused e0000.bmp",false)
+    @hero_direction = 'n'
 		@x = @y = @vel_x = @vel_y = @angle = 0.0
 		@image_number = 0
 	end
@@ -76,6 +78,7 @@ class Hero
 		end
     @hero_image = Gosu::Image.new(window,"/home/webonise/Projects/GeekHours/fighter/asset/hero/red_knight_battlefield_bitmaps/running w#{@image_number}.bmp",false)
     @image_number += 1
+    @hero_direction = 'w'
 	end
 
 	def turn_right(window)
@@ -84,6 +87,7 @@ class Hero
     end
     @hero_image = Gosu::Image.new(window,"/home/webonise/Projects/GeekHours/fighter/asset/hero/red_knight_battlefield_bitmaps/running e#{@image_number}.bmp",false)
     @image_number += 1
+    @hero_direction = 'e'
 	end
 
   def turn_down(window)
@@ -92,6 +96,7 @@ class Hero
     end
     @hero_image = Gosu::Image.new(window,"/home/webonise/Projects/GeekHours/fighter/asset/hero/red_knight_battlefield_bitmaps/running s#{@image_number}.bmp",false)
     @image_number += 1
+    @hero_direction = 's'
   end
 
   def turn_up(window)
@@ -100,11 +105,16 @@ class Hero
     end
     @hero_image = Gosu::Image.new(window,"/home/webonise/Projects/GeekHours/fighter/asset/hero/red_knight_battlefield_bitmaps/running n#{@image_number}.bmp",false)
     @image_number += 1
+    @hero_direction = 'n'
   end
 
 
-	def attack(window)		
-			@hero_image = Gosu::Image.new(window,"/home/webonise/Projects/GeekHours/fighter/asset/hero/red_knight_battlefield_bitmaps/attack e0000.bmp",false)						
+	def attack(window)	
+    if @image_number > 12
+      @image_number = 0
+    end	    
+		@hero_image = Gosu::Image.new(window,"/home/webonise/Projects/GeekHours/fighter/asset/hero/red_knight_battlefield_bitmaps/attack #{@hero_direction}#{@image_number}.bmp",false)						
+    @image_number += 1
 	end
 
 	def move
@@ -112,9 +122,6 @@ class Hero
     @y += @vel_y
     @x %= 1000
     @y %= 700
-    
-    # @vel_x *= 0.95
-    # @vel_y *= 0.95
   end
 
   def accelerate(window,direction)
@@ -141,6 +148,10 @@ class Hero
     self.turn_down(window)
     @y += 1
   end	
+
+  def attack_acceleration(window)
+    self.attack(window)
+  end
 
 	def draw
 		@hero_image.draw_rot(@x,@y,1,@angle)
