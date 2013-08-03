@@ -14,13 +14,19 @@ class FighterWindow < Gosu::Window
 
 	def update
 		if button_down? Gosu::KbLeft or button_down? Gosu::GpLeft then
-      # @hero.turn_left(self)
       @hero.accelerate(self,"left_acceleration")
     end
 
     if button_down? Gosu::KbRight or button_down? Gosu::GpRight then
-      @hero.turn_right(self)
-      @hero.accelerate(window,"right_acceleration")
+      @hero.accelerate(self,"right_acceleration")
+    end
+
+    if button_down? Gosu::KbDown or button_down? Gosu::GpDown then
+      @hero.accelerate(self,"down_acceleration")
+    end
+
+    if button_down? Gosu::KbUp or button_down? Gosu::GpUp then
+      @hero.accelerate(self,"up_acceleration")
     end
 
     if button_down? Gosu::KbSpace  then    	
@@ -73,9 +79,28 @@ class Hero
 	end
 
 	def turn_right(window)
-		 @angle += 0
-     @hero_image = Gosu::Image.new(window,"/home/webonise/Projects/GeekHours/fighter/asset/hero/red_knight_battlefield_bitmaps/right.bmp",false)
+    if @image_number > 7
+      @image_number = 0
+    end
+    @hero_image = Gosu::Image.new(window,"/home/webonise/Projects/GeekHours/fighter/asset/hero/red_knight_battlefield_bitmaps/running e#{@image_number}.bmp",false)
+    @image_number += 1
 	end
+
+  def turn_down(window)
+    if @image_number > 7
+      @image_number = 0
+    end
+    @hero_image = Gosu::Image.new(window,"/home/webonise/Projects/GeekHours/fighter/asset/hero/red_knight_battlefield_bitmaps/running s#{@image_number}.bmp",false)
+    @image_number += 1
+  end
+
+  def turn_up(window)
+    if @image_number > 7
+      @image_number = 0
+    end
+    @hero_image = Gosu::Image.new(window,"/home/webonise/Projects/GeekHours/fighter/asset/hero/red_knight_battlefield_bitmaps/running n#{@image_number}.bmp",false)
+    @image_number += 1
+  end
 
 
 	def attack(window)		
@@ -88,12 +113,12 @@ class Hero
     @x %= 1000
     @y %= 700
     
-    @vel_x *= 0.95
-    @vel_y *= 0.95
+    # @vel_x *= 0.95
+    # @vel_y *= 0.95
   end
 
   def accelerate(window,direction)
-  	sleep(0.04)  	
+  	sleep(0.1)  	
   	self.send(direction,window)  
   end
 
@@ -102,16 +127,19 @@ class Hero
   	@x -= 1
   end
 
-  def right_acceleration
+  def right_acceleration(window)
+    self.turn_right(window)
   	@x += 1
   end
 
-  def up_acceleration
-  	@y += 1
+  def up_acceleration(window)
+    self.turn_up(window)
+  	@y -= 1
   end
 
-  def down_acceleration
-    @y -= 1
+  def down_acceleration(window)
+    self.turn_down(window)
+    @y += 1
   end	
 
 	def draw
