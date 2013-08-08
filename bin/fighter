@@ -1,0 +1,6 @@
+#!/usr/bin/fighter
+
+require 'fighter'
+
+initiate_warrior = FighterWindow.new
+initiate_warrior.show()
