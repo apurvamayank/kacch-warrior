@@ -58,6 +58,3 @@ class FighterWindow < Gosu::Window
     end
   end
 end
-
-initiate_warrior = FighterWindow.new
-initiate_warrior.show()
