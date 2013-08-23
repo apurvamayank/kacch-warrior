@@ -18,5 +18,8 @@ To run the application:-
 
 2) Get inside the application directory
 
-3) ruby lib/fighter.rb
-	
+3) gem install KacchWarrior-0.0.0.gem
+
+4) run command 'fighter' in the terminal
+
+5) use navigation arrows for movement and space bar for attack.
